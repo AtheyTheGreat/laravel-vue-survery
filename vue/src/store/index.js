@@ -11,21 +11,15 @@ const store = createStore({
       loading: false,
       data: {}
     },
-    surveys: {
+    patients: {
       loading: false,
       links: [],
       data: []
     },
-    currentSurvey: {
+    currentPatient: {
       data: {},
       loading: false,
     },
-    questionTypes: ["text", "select", "radio", "checkbox", "textarea"],
-    notification: {
-      show: false,
-      type: 'success',
-      message: ''
-    }
   },
   getters: {},
   actions: {
@@ -74,72 +68,66 @@ const store = createStore({
       })
 
     },
-    getSurveys({ commit }, {url = null} = {}) {
-      commit('setSurveysLoading', true)
-      url = url || "/survey";
+    getPatients({ commit }, {url = null} = {}) {
+      commit('setPatientsLoading', true)
+      url = url || "/patient";
       return axiosClient.get(url).then((res) => {
-        commit('setSurveysLoading', false)
-        commit("setSurveys", res.data);
+        commit('setPatientsLoading', false)
+        commit("setPatients", res.data);
         return res;
       });
     },
-    getSurvey({ commit }, id) {
-      commit("setCurrentSurveyLoading", true);
+    getPatient({ commit }, id) {
+      commit("setCurrentPatientLoading", true);
       return axiosClient
-        .get(`/survey/${id}`)
+        .get(`/patient/${id}`)
         .then((res) => {
-          commit("setCurrentSurvey", res.data);
-          commit("setCurrentSurveyLoading", false);
+          commit("setCurrentPatient", res.data);
+          commit("setCurrentPatientLoading", false);
           return res;
         })
         .catch((err) => {
-          commit("setCurrentSurveyLoading", false);
+          commit("setCurrentPatientLoading", false);
           throw err;
         });
     },
-    getSurveyBySlug({ commit }, slug) {
-      commit("setCurrentSurveyLoading", true);
+    getPatientBySlug({ commit }, slug) {
+      commit("setCurrentPatientLoading", true);
       return axiosClient
-        .get(`/survey-by-slug/${slug}`)
+        .get(`/patient-by-slug/${slug}`)
         .then((res) => {
-          commit("setCurrentSurvey", res.data);
-          commit("setCurrentSurveyLoading", false);
+          commit("setCurrentPatient", res.data);
+          commit("setCurrentPatientLoading", false);
           return res;
         })
         .catch((err) => {
-          commit("setCurrentSurveyLoading", false);
+          commit("setCurrentPatientLoading", false);
           throw err;
         });
     },
-    saveSurvey({ commit, dispatch }, survey) {
-
-      delete survey.image_url;
-
+    savePatient({ commit, dispatch }, patient) {
       let response;
-      if (survey.id) {
+      if (patient.id) {
         response = axiosClient
-          .put(`/survey/${survey.id}`, survey)
+          .put(`/patient/${patient.id}`, patient)
           .then((res) => {
-            commit('setCurrentSurvey', res.data)
+            commit('setCurrentPatient', res.data)
             return res;
           });
       } else {
-        response = axiosClient.post("/survey", survey).then((res) => {
-          commit('setCurrentSurvey', res.data)
+        response = axiosClient.post("/patient", patient).then((res) => {
+          commit('setCurrentPatient', res.data)
           return res;
         });
       }
 
       return response;
     },
-    deleteSurvey({ dispatch }, id) {
-      return axiosClient.delete(`/survey/${id}`).then((res) => {
-        dispatch('getSurveys')
+    deletePatient({ dispatch }, id) {
+      return axiosClient.delete(`/patient/${id}`).then((res) => {
+        dispatch('getPatients')
         return res;
       });
-    },
-    saveSurveyAnswer({commit}, {surveyId, answers}) {
-      return axiosClient.post(`/survey/${surveyId}/answer`, {answers});
     },
   },
   mutations: {
@@ -162,18 +150,18 @@ const store = createStore({
     setDashboardData: (state, data) => {
       state.dashboard.data = data
     },
-    setSurveysLoading: (state, loading) => {
-      state.surveys.loading = loading;
+    setPatientsLoading: (state, loading) => {
+      state.patients.loading = loading;
     },
-    setSurveys: (state, surveys) => {
-      state.surveys.links = surveys.meta.links;
-      state.surveys.data = surveys.data;
+    setPatients: (state, patients) => {
+      state.patients.links = patients.meta.links;
+      state.patients.data = patients.data;
     },
-    setCurrentSurveyLoading: (state, loading) => {
-      state.currentSurvey.loading = loading;
+    setCurrentPatientLoading: (state, loading) => {
+      state.currentPatient.loading = loading;
     },
-    setCurrentSurvey: (state, survey) => {
-      state.currentSurvey.data = survey.data;
+    setCurrentPatient: (state, patient) => {
+      state.currentPatient.data = patient.data;
     },
     notify: (state, {message, type}) => {
       state.notification.show = true;

@@ -6,102 +6,48 @@
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-gray-700"
     >
       <DashboardCard class="order-1 lg:order-2" style="animation-delay: 0.1s">
-        <template v-slot:title>Total Surveys</template>
+        <template v-slot:title>Total Patients</template>
         <div
           class="text-8xl pb-4 font-semibold flex-1 flex items-center justify-center"
         >
-          {{ data.totalSurveys }}
-        </div>
-      </DashboardCard>
-      <DashboardCard class="order-2 lg:order-4" style="animation-delay: 0.2s">
-        <template v-slot:title>Total Answers</template>
-        <div
-          class="text-8xl pb-4 font-semibold flex-1 flex items-center justify-center"
-        >
-          {{ data.totalAnswers }}
+          {{ data.totalPatients }}
         </div>
       </DashboardCard>
       <DashboardCard
         class="order-3 lg:order-1 row-span-2"
         style="animation-delay: 0.2s"
       >
-        <template v-slot:title>Latest Survey</template>
-        <div v-if="data.latestSurvey">
-          <img
-            :src="data.latestSurvey.image_url"
-            class="w-[240px] mx-auto"
-            alt=""
-          />
-          <h3 class="font-bold text-xl mb-3">{{ data.latestSurvey.title }}</h3>
+        <template v-slot:title>Latest Patient</template>
+        <div v-if="data.latestPatient">
+          <h3 class="font-bold text-xl mb-3">{{ data.latestPatient.title }}</h3>
           <div class="flex justify-between text-sm mb-1">
-            <div>Create Date:</div>
-            <div>{{ data.latestSurvey.created_at }}</div>
+            <div> Name:</div>
+            <div>{{ data.latestPatient.name }}</div>
           </div>
           <div class="flex justify-between text-sm mb-1">
-            <div>Expire Date:</div>
-            <div>{{ data.latestSurvey.expire_date }}</div>
+            <div> Date:</div>
+            <div>{{ data.latestPatient.dob }}</div>
           </div>
           <div class="flex justify-between text-sm mb-1">
-            <div>Status:</div>
-            <div>{{ data.latestSurvey.status ? "Active" : "Draft" }}</div>
+            <div>national id:</div>
+            <div>{{ data.latestPatient.nationalid}}</div>
           </div>
           <div class="flex justify-between text-sm mb-1">
-            <div>Questions:</div>
-            <div>{{ data.latestSurvey.questions }}</div>
-          </div>
-          <div class="flex justify-between text-sm mb-3">
-            <div>Answers:</div>
-            <div>{{ data.latestSurvey.answers }}</div>
+            <div> Address:</div>
+            <div>{{ data.latestPatient.address }}</div>
           </div>
           <div class="flex justify-between">
             <TButton
-              :to="{ name: 'SurveyView', params: { id: data.latestSurvey.id } }"
+              :to="{ name: 'PatientView', params: { id: data.latestPatient.id } }"
               link
             >
               <PencilIcon class="w-5 h-5 mr-2" />
-              Edit Survey
-            </TButton>
-
-            <TButton link>
-              <EyeIcon class="w-5 h-5 mr-2" />
-              View Answers
+              Edit Patient
             </TButton>
           </div>
         </div>
         <div v-else class="text-gray-600 text-center py-16">
-          Your don't have surveys yet
-        </div>
-      </DashboardCard>
-      <DashboardCard class="order-4 lg:order-3 row-span-2" style="animation-delay: 0.3s">
-        <template v-slot:title>
-          <div class="flex justify-between items-center mb-3 px-2">
-            <h3 class="text-2xl font-semibold">Latest Answers</h3>
-
-            <a
-              href="javascript:void(0)"
-              class="text-sm text-blue-500 hover:decoration-blue-500"
-            >
-              View all
-            </a>
-          </div>
-        </template>
-
-        <div v-if="data.latestAnswers.length" class="text-left">
-          <a
-            href="#"
-            v-for="answer of data.latestAnswers"
-            :key="answer.id"
-            class="block p-2 hover:bg-gray-100/90"
-          >
-            <div class="font-semibold">{{ answer.survey.title }}</div>
-            <small>
-              Answer Made at:
-              <i class="font-semibold">{{ answer.end_date }}</i>
-            </small>
-          </a>
-        </div>
-        <div v-else class="text-gray-600 text-center py-16">
-          Your don't have answers yet
+          Your don't have Patients yet
         </div>
       </DashboardCard>
     </div>

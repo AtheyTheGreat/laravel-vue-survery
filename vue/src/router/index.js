@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
-import Surveys from "../views/Surveys.vue";
-import SurveyView from "../views/SurveyView.vue";
+import Patient from "../views/Patient.vue";
+import PatientView from "../views/PatientView.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import NotFound from "../views/NotFound.vue";
-import SurveyPublicView from "../views/SurveyPublicView.vue";
+import PatientPublicView from "../views/PatientPublicView.vue";
 import DefaultLayout from "../components/DefaultLayout.vue";
 import AuthLayout from "../components/AuthLayout.vue";
 import store from "../store";
@@ -18,15 +18,15 @@ const routes = [
     meta: { requiresAuth: true },
     children: [
       { path: "/dashboard", name: "Dashboard", component: Dashboard },
-      { path: "/surveys", name: "Surveys", component: Surveys },
-      { path: "/surveys/create", name: "SurveyCreate", component: SurveyView },
-      { path: "/surveys/:id", name: "SurveyView", component: SurveyView },
+      { path: "/patients", name: "Patients", component: Patient },
+      { path: "/patients/create", name: "PatientCreate", component: PatientView },
+      { path: "/patients/:id", name: "PatientView", component: PatientView },
     ],
   },
   {
-    path: "/view/survey/:slug",
-    name: 'SurveyPublicView',
-    component: SurveyPublicView
+    path: "/view/patient/:slug",
+    name: 'PatientPublicView',
+    component: PatientPublicView
   },
   {
     path: "/auth",

@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Survey;
+use App\Models\Patient;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
-class StoreSurveyRequest extends FormRequest
+class StorePatientRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -35,13 +35,12 @@ class StoreSurveyRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string|max:1000',
-            'image' => 'nullable|string',
-            'user_id' => 'exists:users,id',
-            'status' => 'required|boolean',
-            'description' => 'nullable|string',
-            'expire_date' => 'nullable|date|after:tomorrow',
-            'questions' => 'array',
+            'user_id' => 'required|exists:users,id',
+            'name' => 'required|string|max:255',
+            'dob' => 'required|date',
+            'nationalid' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'island_name' => 'required|string|max:255',
         ];
     }
 

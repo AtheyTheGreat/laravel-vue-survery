@@ -20,13 +20,12 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::resource('/survey', \App\Http\Controllers\SurveyController::class);
+    Route::resource('/patient', \App\Http\Controllers\PatientController::class);
 
     Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index']);
 });
 
-Route::get('/survey-by-slug/{survey:slug}', [\App\Http\Controllers\SurveyController::class, 'showForGuest']);
-Route::post('/survey/{survey}/answer', [\App\Http\Controllers\SurveyController::class, 'storeAnswer']);
+Route::get('/patient-by-slug/{patient:slug}', [\App\Http\Controllers\PatientController::class, 'showForGuest']);
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);

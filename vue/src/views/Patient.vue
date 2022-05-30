@@ -3,23 +3,23 @@
   <PageComponent>
     <template v-slot:header>
       <div class="flex justify-between items-center">
-        <h1 class="text-3xl font-bold text-gray-900">Surveys</h1>
-        <TButton color="green" :to="{ name: 'SurveyCreate' }">
+        <h1 class="text-3xl font-bold text-gray-900">Patients</h1>
+        <TButton color="green" :to="{ name: 'PatientCreate' }">
           <PlusIcon class="w-5 h-5" />
-          Add new Survey
+          Add new Patient
         </TButton>
       </div>
     </template>
-    <div v-if="surveys.loading" class="flex justify-center">Loading...</div>
-    <div v-else-if="surveys.data.length">
+    <div v-if="patients.loading" class="flex justify-center">Loading...</div>
+    <div v-else-if="patients.data.length">
       <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
-        <SurveyListItem
-          v-for="(survey, ind) in surveys.data"
-          :key="survey.id"
-          :survey="survey"
+        <PatientListItem
+          v-for="(patient, ind) in patients.data"
+          :key="patient.id"
+          :patient="patient"
           class="opacity-0 animate-fade-in-down"
           :style="{ animationDelay: `${ind * 0.1}s` }"
-          @delete="deleteSurvey(survey)"
+          @delete="deletePatient(patient)"
         />
       </div>
       <div class="flex justify-center mt-5">
@@ -29,7 +29,7 @@
         >
           <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->
           <a
-            v-for="(link, i) of surveys.links"
+            v-for="(link, i) of patients.links"
             :key="i"
             :disabled="!link.url"
             href="#"
@@ -41,7 +41,7 @@
                 ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
                 : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50',
               i === 0 ? 'rounded-l-md bg-gray-100 text-gray-700' : '',
-              i === surveys.links.length - 1 ? 'rounded-r-md' : '',
+              i === patients.links.length - 1 ? 'rounded-r-md' : '',
             ]"
             v-html="link.label"
           >
@@ -50,7 +50,7 @@
       </div>
     </div>
     <div v-else class="text-gray-600 text-center py-16">
-      Your don't have surveys yet
+      Your don't have Patients yet
     </div>
   </PageComponent>
 </template>
@@ -61,20 +61,20 @@ import { computed } from "vue";
 import {PlusIcon} from "@heroicons/vue/solid"
 import TButton from '../components/core/TButton.vue'
 import PageComponent from "../components/PageComponent.vue";
-import SurveyListItem from "../components/SurveyListItem.vue";
+import PatientListItem from "../components/PatientListItem.vue";
 
-const surveys = computed(() => store.state.surveys);
+const patients = computed(() => store.state.patients);
 
-store.dispatch("getSurveys");
+store.dispatch("getPatients");
 
-function deleteSurvey(survey) {
+function deletePatient(patient) {
   if (
     confirm(
-      `Are you sure you want to delete this survey? Operation can't be undone!!`
+      `Are you sure you want to delete this Patient? Operation can't be undone!!`
     )
   ) {
-    store.dispatch("deleteSurvey", survey.id).then(() => {
-      store.dispatch("getSurveys");
+    store.dispatch("deletePatient", patient.id).then(() => {
+      store.dispatch("getPatients");
     });
   }
 }
@@ -85,6 +85,6 @@ function getForPage(ev, link) {
     return;
   }
 
-  store.dispatch("getSurveys", { url: link.url });
+  store.dispatch("getPatients", { url: link.url });
 }
 </script>
